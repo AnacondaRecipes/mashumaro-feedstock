@@ -1,28 +1,27 @@
 {% set name = "mashumaro" %}
-{% set version = "3.8.1" %}
-
+{% set version = "3.6" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/mashumaro-{{ version }}.tar.gz
-  sha256: 8bae8b25e2287b75094655b8ba8635f34016c09ca16498188f2f3b198d88b7ef
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: ceb3de53029219bbbb0385ca600b59348dcd14e0c68523986c6d51889ad338f5
 
 build:
-  noarch: python
   number: 0
-  script: {{ PYTHON }} -m pip install . -vv
+  skip: True  # [py<37]
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
   host:
     - pip
-    - python >=3.7
+    - python
+    - setuptools
+    - wheel
   run:
-    # Check for dependency changes at:
-    # <https://github.com/Fatal1ty/mashumaro/blob/v{{ version }}/setup.py>
-    - python >=3.7
+    - python
     - typing-extensions >=4.1.0
 
 test:
@@ -30,15 +29,20 @@ test:
     - mashumaro
     - mashumaro.core
     - mashumaro.mixins
-  commands:
-    - pip check
   requires:
     - pip
+  commands:
+    - pip check
 
 about:
   home: https://github.com/Fatal1ty/mashumaro
+  dev_url: https://github.com/Fatal1ty/mashumaro
+  doc_url: https://github.com/Fatal1ty/mashumaro
   summary: Fast serialization framework on top of dataclasses
+  description: |
+    Fast and well tested serialization library on top of dataclasses
   license: Apache-2.0
+  license_family: Apache
   license_file: LICENSE
 
 extra:
