@@ -1,5 +1,5 @@
 {% set name = "mashumaro" %}
-{% set version = "3.10" %}
+{% set version = "3.16" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,12 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 0248a5c8574aa6cd20696621502d38a7ea66af3d6d93c5d03f93b33298edc878
+  sha256: 3844137cf053bbac30c4cbd0ee9984e839a5731a0ef96fd3dd9388359af3f2e1
 
 build:
-  number: 1
-  skip: True  # [py<38]
+  number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  skip: True  # [py<39]
 
 requirements:
   host:
@@ -23,27 +23,75 @@ requirements:
   run:
     - python
     - typing-extensions >=4.1.0
+  run_constrained:
+    # msgpack
+    - msgpack-python >=0.5.6
+    # toml
+    - tomli-w >=1.0
+    - tomli >=1.1.0  # [py<311]
+    # yaml
+    - pyyaml >=3.13
 
 test:
+  source_files:
+    - tests
   imports:
     - mashumaro
+    - mashumaro.codecs
+    - mashumaro.codecs._builder
+    - mashumaro.config
     - mashumaro.core
+    - mashumaro.core.const
+    - mashumaro.core.helpers
+    - mashumaro.core.meta.code.builder
+    - mashumaro.core.meta.code.lines
+    - mashumaro.core.meta.helpers
+    - mashumaro.core.meta.mixin
+    - mashumaro.core.meta.types.common
+    - mashumaro.core.meta.types.pack
+    - mashumaro.core.meta.types.unpack
+    - mashumaro.dialect
+    - mashumaro.exceptions
+    - mashumaro.helper
+    - mashumaro.jsonschema
+    - mashumaro.jsonschema.annotations
+    - mashumaro.jsonschema.dialects
+    - mashumaro.jsonschema.models
+    - mashumaro.jsonschema.plugins
+    - mashumaro.jsonschema.schema
     - mashumaro.mixins
-  requires:
-    - pip
+    - mashumaro.mixins.dict
+    - mashumaro.mixins.msgpack
+    - mashumaro.mixins.orjson
+    - mashumaro.mixins.toml
+    - mashumaro.types
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -v tests
+  requires:
+    - pip
+    - pytest >=6.2.1
+    - pytest-mock >=3.5.1
+    - msgpack-python >=0.5.6
+    - orjson >=3.10.10
+    - tomli-w >=1.0
+    - pyyaml >=3.13
+    - ciso8601 >=2.1.3
+    - pendulum >=2.1.2  # [py<313]
 
 about:
   home: https://github.com/Fatal1ty/mashumaro
-  dev_url: https://github.com/Fatal1ty/mashumaro
-  doc_url: https://github.com/Fatal1ty/mashumaro
-  summary: Fast serialization framework on top of dataclasses
-  description: |
-    Fast and well tested serialization library on top of dataclasses
+  summary: Fast and well tested serialization library
   license: Apache-2.0
   license_family: Apache
   license_file: LICENSE
+  description: |
+    In Python, you often need to dump and load objects based on the schema you have. It can be a dataclass model, a list
+    of third-party generic classes or whatever. Mashumaro not only lets you save and load things in different ways, but it
+    also does it super quick.
+  doc_url: https://github.com/Fatal1ty/mashumaro/blob/master/README.md
+  dev_url: https://github.com/Fatal1ty/mashumaro
 
 extra:
   recipe-maintainers:
