@@ -21,8 +21,7 @@ requirements:
     - setuptools >=77.0
   run:
     - python
-    - typing-extensions >=4.1.0
-    - typing_extensions >=4.14.0
+    - typing-extensions >=4.14.0
   run_constrained:
     # msgpack
     - msgpack-python >=0.5.6
