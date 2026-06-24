@@ -31,6 +31,27 @@ requirements:
     # yaml
     - pyyaml >=3.13
 
+# The 3.14 sdist omits tests/entities.py, tests/utils.py, and tests/conftest.py,
+# so tests that import from those helpers must be skipped.
+{% set tests_missing_helpers = [
+  "--ignore=tests/test_config.py",
+  "--ignore=tests/test_data_types.py",
+  "--ignore=tests/test_dialect.py",
+  "--ignore=tests/test_generics.py",
+  "--ignore=tests/test_generics_pep_695.py",
+  "--ignore=tests/test_json.py",
+  "--ignore=tests/test_literal.py",
+  "--ignore=tests/test_meta.py",
+  "--ignore=tests/test_metadata_options.py",
+  "--ignore=tests/test_pep_563.py",
+  "--ignore=tests/test_types.py",
+  "--ignore=tests/test_union.py",
+] %}
+# test_pep_695.py uses the PEP 695 `type` keyword syntax, available only in Python 3.12+.
+{% set tests_pep695_syntax = [
+  "--ignore=tests/test_pep_695.py",
+] %}
+
 test:
   source_files:
     - tests
@@ -66,9 +87,8 @@ test:
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - python -c "open('tests/__init__.py', 'w').close()"
-    - pytest -v --ignore=tests/test_pep_695.py --ignore=tests/test_generics_pep_695.py tests  # [py<312]
-    - pytest -v tests  # [py>=312]
+    - pytest -v {{ (tests_missing_helpers + tests_pep695_syntax) | join(" ") }} tests  # [py<312]
+    - pytest -v {{ tests_missing_helpers | join(" ") }} tests  # [py>=312]
   requires:
     - pip
     - pytest >=6.2.1
