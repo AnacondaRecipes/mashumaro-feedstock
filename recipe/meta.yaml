@@ -1,5 +1,5 @@
 {% set name = "mashumaro" %}
-{% set version = "3.21" %}
+{% set version = "3.14" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 9bc53b0c7dbed0be80e3ccc3efe1d621ce146b4b7a673ec41ba001a417f2c4b4
+  sha256: 5ef6f2b963892cbe9a4ceb3441dfbea37f8c3412523f25d42e9b3a7186555f1d
 
 build:
   number: 0
@@ -18,10 +18,10 @@ requirements:
   host:
     - pip
     - python
-    - setuptools >=77.0
+    - setuptools
   run:
     - python
-    - typing-extensions >=4.14.0
+    - typing-extensions >=4.1.0
   run_constrained:
     # msgpack
     - msgpack-python >=0.5.6
@@ -56,7 +56,6 @@ test:
     - mashumaro.jsonschema.annotations
     - mashumaro.jsonschema.dialects
     - mashumaro.jsonschema.models
-    - mashumaro.jsonschema.plugins
     - mashumaro.jsonschema.schema
     - mashumaro.mixins
     - mashumaro.mixins.dict
@@ -73,7 +72,7 @@ test:
     - pytest >=6.2.1
     - pytest-mock >=3.5.1
     - msgpack-python >=0.5.6
-    - orjson >=3.10.10
+    - orjson
     - tomli-w >=1.0
     - pyyaml >=3.13
     - ciso8601 >=2.1.3
