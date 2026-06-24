@@ -76,11 +76,11 @@ test:
     - mashumaro.dialect
     - mashumaro.exceptions
     - mashumaro.helper
-    - mashumaro.jsonschema
-    - mashumaro.jsonschema.annotations
-    - mashumaro.jsonschema.dialects
-    - mashumaro.jsonschema.models
-    - mashumaro.jsonschema.schema
+    - mashumaro.jsonschema         # [py<314]
+    - mashumaro.jsonschema.annotations  # [py<314]
+    - mashumaro.jsonschema.dialects     # [py<314]
+    - mashumaro.jsonschema.models       # [py<314]
+    - mashumaro.jsonschema.schema       # [py<314]
     - mashumaro.mixins
     - mashumaro.mixins.dict
     - mashumaro.mixins.msgpack
