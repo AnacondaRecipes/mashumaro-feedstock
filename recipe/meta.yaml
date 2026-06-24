@@ -31,8 +31,11 @@ requirements:
     # yaml
     - pyyaml >=3.13
 
-# The 3.14 sdist omits tests/entities.py, tests/utils.py, and tests/conftest.py,
-# so tests that import from those helpers must be skipped.
+# The 3.14 PyPI sdist does not ship tests/entities.py, tests/utils.py, or
+# tests/conftest.py (they exist in the GitHub repo but are excluded from the
+# tarball manifest). Any test file that imports from those helpers fails at
+# collection time with ModuleNotFoundError. This was fixed in the 3.21 sdist,
+# which includes them — the 3.21 recipe runs pytest with no ignores at all.
 {% set tests_missing_helpers = [
   "--ignore=tests/test_config.py",
   "--ignore=tests/test_data_types.py",
