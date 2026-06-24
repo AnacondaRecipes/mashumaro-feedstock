@@ -66,8 +66,9 @@ test:
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - PYTHONPATH=. pytest -v --import-mode=importlib --ignore=tests/test_pep_695.py --ignore=tests/test_generics_pep_695.py tests  # [py<312]
-    - PYTHONPATH=. pytest -v --import-mode=importlib tests  # [py>=312]
+    - python -c "open('tests/__init__.py', 'w').close()"
+    - pytest -v --ignore=tests/test_pep_695.py --ignore=tests/test_generics_pep_695.py tests  # [py<312]
+    - pytest -v tests  # [py>=312]
   requires:
     - pip
     - pytest >=6.2.1
