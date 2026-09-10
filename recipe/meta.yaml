@@ -8,6 +8,8 @@ package:
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 64538cc365204402a060ebde683a86505b5a4344acf6870d79021e9fbfe57360
+  patches:
+    - patches/typing-extensions-4.16-typevartuple-repr.patch
 
 build:
   number: 0
