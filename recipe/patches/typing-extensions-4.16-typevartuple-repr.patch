@@ -1,0 +1,40 @@
+From da199032223da4fa31709a23553204c47b49bd85 Mon Sep 17 00:00:00 2001
+From: Alexander Tikhonov <fatal1ty.rnd@gmail.com>
+Date: Tue, 7 Jul 2026 18:17:24 +0300
+Subject: [PATCH] Adapt test for typing-extensions==4.16.0 changes
+
+---
+ tests/test_pep_646.py | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/tests/test_pep_646.py b/tests/test_pep_646.py
+index dd5367b8..4b89ef08 100644
+--- a/tests/test_pep_646.py
++++ b/tests/test_pep_646.py
+@@ -284,20 +284,20 @@ def test_type_name_for_unpacks_py_less_than_311():
+         )
+         == "Tuple[str, Tuple[int, ...], int]"
+     )
+-    assert _type_name(Tuple[Unpack[Ts]]) == "Tuple[Unpack[Ts]]"
++    assert _type_name(Tuple[Unpack[Ts]]) == "Tuple[Unpack[~Ts]]"
+     assert (
+         _type_name(Tuple[int, Unpack[Ts], int])
+-        == "Tuple[int, Unpack[Ts], int]"
++        == "Tuple[int, Unpack[~Ts], int]"
+     )
+-    assert _type_name(Generic[Unpack[Ts]]) == "Generic[Unpack[Ts]]"
++    assert _type_name(Generic[Unpack[Ts]]) == "Generic[Unpack[~Ts]]"
+     assert (
+         _type_name(Generic[K, Unpack[Ts], V])
+-        == "Generic[Any, Unpack[Ts], Any]"
++        == "Generic[Any, Unpack[~Ts], Any]"
+     )
+     assert _type_name(Unpack[Tuple[int]]) == "int"
+     assert _type_name(Unpack[Tuple[int, float]]) == "int, float"
+-    assert _type_name(Unpack[Ts]) == "Unpack[Ts]"
+-    assert _type_name(Ts) == "Ts"
++    assert _type_name(Unpack[Ts]) == "Unpack[~Ts]"
++    assert _type_name(Ts) == "~Ts"
+ 
+     # this doesn't work on python<3.11
+     # assert (
