@@ -1,17 +1,17 @@
 {% set name = "mashumaro" %}
-{% set version = "3.10" %}
+{% set version = "3.14" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 0248a5c8574aa6cd20696621502d38a7ea66af3d6d93c5d03f93b33298edc878
+  sha256: 5ef6f2b963892cbe9a4ceb3441dfbea37f8c3412523f25d42e9b3a7186555f1d
 
 build:
-  number: 1
-  skip: True  # [py<38]
+  number: 0
+  skip: true  # [py<38 or py>313]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
